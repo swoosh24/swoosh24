@@ -1,0 +1,43 @@
+import requests
+import json
+
+# Function to get bot information using Telegram API
+def get_bot_info(bot_token):
+    url = f"https://api.telegram.org/bot{bot_token}/getMe"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+# Function to get bot updates to understand user interactions
+def get_bot_updates(bot_token):
+    url = f"https://api.telegram.org/bot{bot_token}/getUpdates"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+# Main function to perform reconnaissance
+def main():
+    bot_token = input("Enter the Telegram bot token: ")
+
+    # Get bot information
+    bot_info = get_bot_info(bot_token)
+    if bot_info and bot_info.get('ok'):
+        print("Bot Information:")
+        print(json.dumps(bot_info['result'], indent=4))
+    else:
+        print("Failed to retrieve bot information.")
+
+    # Get bot updates
+    bot_updates = get_bot_updates(bot_token)
+    if bot_updates and bot_updates.get('ok'):
+        print("\nRecent Updates:")
+        print(json.dumps(bot_updates['result'], indent=4))
+    else:
+        print("Failed to retrieve bot updates.")
+
+if __name__ == "__main__":
+    main()
